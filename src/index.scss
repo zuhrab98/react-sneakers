@@ -1,0 +1,240 @@
+*{
+    margin: 0;
+    padding: 0;
+    font-family: 'Inter', system-ui;
+}
+
+
+body {
+    margin: 0;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    background-color: #E7F6FF;
+}
+
+.wrapper {
+    max-width: 1080px;
+    margin: 50px auto;
+    background: #FFFFFF;
+    box-shadow: 0px 10px 20px rgba(0, 0, 0, 0.04);
+    border-radius: 20px;
+}
+
+header {
+    border-bottom: 1px solid #EAEAEA;
+
+    h3 {
+        font-weight: 700;
+        font-size: 20px;
+        line-height: 24px;
+        text-transform: uppercase;
+        color: #000000;
+    }
+
+    p{
+        font-weight: 400;
+        font-size: 14px;
+        line-height: 17px;
+        color: #9D9D9D;
+    }
+
+    .headerInfo {
+        margin-left: 16px;
+    }
+}
+
+.headerRight {
+    li {
+        display: flex;
+        align-items: center;
+    }
+
+    li span {
+        font-weight: 600;
+        font-size: 14px;
+        line-height: 17px;
+    }
+}
+
+
+.title-1 {
+    font-weight: 700;
+    font-size: 32px;
+    line-height: 39px;
+    color: #000000;
+}
+
+.search{
+    display: flex;
+    border: 1px solid #F3F3F3;
+    border-radius: 10px;
+    padding-left: 18px;
+
+    input {
+        border: none;
+        padding: 12px;
+        &::placeholder {
+            color: #C4C4C4;
+        }
+    }
+}
+
+
+.card {
+    width: 220px;
+    padding: 30px;
+    background: #FFFFFF;
+    border: 1px solid #F8F8F8;
+    border-radius: 40px;
+    transition: .2s ease-in;
+
+    &:hover{
+        box-shadow: 0px 20px 35px rgba(0, 0, 0, 0.05);
+        transform: translateY(-10px);
+    }
+
+    .favorite{
+        position: absolute;
+        cursor: pointer;
+    }
+
+    p {
+        font-weight: 400;
+        font-size: 14px;
+        line-height: 17px;
+        margin-top: 14px;
+        margin-bottom: 14px;
+    }
+
+    span {
+        font-weight: 500;
+        font-size: 11px;
+        line-height: 13px;
+        text-transform: uppercase;
+        color: #BDBDBD;
+        margin-bottom: 2px;
+    }
+
+    b{
+        font-weight: 700;
+        font-size: 14px;
+        line-height: 17px;
+    }
+
+    .button {
+        width: 32px;
+        height: 32px;
+        border: none;
+        background: #FFFFFF;
+        border: 1px solid #F2F2F2;
+        border-radius: 8px;
+    }
+}
+
+.overlay {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 1;
+}
+
+.drawer {
+    position: absolute;
+    padding: 30px;
+    width: 385px;
+    height: 100%;
+    right: 0;
+    background: #FFFFFF;
+
+    .items {
+        overflow: auto;
+        margin-bottom: 40px;
+    }
+
+    .cartItem{
+        padding: 20px;
+        background: #FFFFFF;
+        border: 1px solid #F3F3F3;
+        border-radius: 20px;
+        font-size: 14px;
+
+        .drawerCardInfo {
+            width: 150px
+        }
+    }
+
+    .cartItemImg {
+        width: 70px;
+        height: 70px;
+        background-position: 0 2px;
+        background-size: contain;
+    }
+
+    .image-close {
+        cursor: pointer;
+        opacity: .5;
+        transition: .2s ease-in;
+
+        &:hover {
+            opacity: 1;
+        }
+    }
+}
+
+.cartTotalBlock {
+    font-size: 16px;
+    li {
+        display: flex;
+        align-items: flex-end;
+    }
+    div {
+        flex: 1;
+        border-bottom: 1px dashed #DFDFDF;
+        position: relative;
+        top: -4px;
+        margin: 0 8px;
+    }
+
+    .orderBtn {
+        position: relative;
+        img{
+            position: absolute;
+            right: 35px;
+            top: 21px;
+            transition: .2s ease-in-out;
+        }
+
+        &:hover {
+            img{
+                transform: translateX(10px);
+            }
+        }
+    }
+}
+
+.orderBtn {
+    display: block;
+    text-align: center;
+    width: 100%;
+    height: 55px;
+    line-height: 55px;
+    background: #9DD558;
+    border-radius: 18px;
+
+    font-weight: 600;
+    font-size: 16px;
+    color: #FFFFFF;
+    cursor: pointer;
+    transition: .2s ease-in;
+
+    &:hover{
+        background: lighten(#a3dd5c, 5%);
+    }
+    &:active {
+        background: darken(#a3dd5c, 5%);
+    }
+
+}
