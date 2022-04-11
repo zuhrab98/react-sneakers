@@ -1,56 +1,126 @@
 import React from "react";
+import { Route, Routes } from "react-router-dom";
+import axios from "axios";
 import Header from "./components/Header";
-import Card from "./components/Card";
 import Drawer from "./components/Drawer";
+import AppContext from "./context";
+
+import Favorites from "./pages/Favorites";
+import Home from "./pages/Home";
 
 function App() {
     const [items, setItems] = React.useState([])
     const [cartItems, setCartItems] = React.useState([])
-
+    const [favorites, setFavorites] = React.useState([])
+    const [searchInput, setSearchInput] = React.useState('')
     const [drawerOpen, setDrawerOpen] = React.useState(false)
+    const [isLoading, setIsLoading] = React.useState(true)
 
-
+    // Получаем данные карточек
     React.useEffect(() => {
-        fetch('https://624323f0d126926d0c5c2ace.mockapi.io/items')
-            .then(res => {
-                return res.json()
-            }).then(data => {
-                setItems(data)
-            })
+        async function fetchData() {
+            const itemsResponse = await axios.get('https://624323f0d126926d0c5c2ace.mockapi.io/items')
+            const cartResponse = await axios.get('https://624323f0d126926d0c5c2ace.mockapi.io/cart')
+            const favoritesResponse = await axios.get('https://624323f0d126926d0c5c2ace.mockapi.io/favorites')
+
+            setIsLoading(false)
+
+            setCartItems(cartResponse.data)
+            setFavorites(favoritesResponse.data)
+            setItems(itemsResponse.data)
+        }
+        fetchData()
+
     }, [])
 
-    const onAddTocart = (obj) => {
-        setCartItems(prev => ([...prev, obj]))
+    // Записываем данные которые добавили в козину на сервер
+    const onAddTocart = async (obj) => {
+        console.log(obj);
+        if (cartItems.find(item => Number(item.id) === Number(obj.id))) {
+            axios.delete(`https://624323f0d126926d0c5c2ace.mockapi.io/cart/${obj.id}`)
+            setCartItems(prev => prev.filter(item => Number(item.id) !== Number(obj.id)))
+        } else {
+            axios.post('https://624323f0d126926d0c5c2ace.mockapi.io/cart', obj)
+            setCartItems((prev) => [...prev, obj]);
+        }
     }
 
+    const onRemoveItem = (id) => {
+        console.log(id);
+        axios.delete(`https://624323f0d126926d0c5c2ace.mockapi.io/cart/${id}`)
+        setCartItems(prev => prev.filter(item => item.id !== id))
+    }
+
+    // по клику мы вызываем эту функцию и записываем избранные карточки на сервер
+    const onAddToFavorite = async (obj) => {
+        try {
+            if (favorites.find(favObj => favObj.id === obj.id)) {
+                axios.delete(`https://624323f0d126926d0c5c2ace.mockapi.io/favorites/${obj.id}`)
+                setFavorites((prev) => prev.filter(item => Number(item.id) !== Number(obj.id)))
+            } else {
+                const { data } = await axios.post('https://624323f0d126926d0c5c2ace.mockapi.io/favorites', obj)
+                setFavorites(prev => [...prev, data])
+            }
+        } catch (error) {
+            alert(error)
+        }
+    }
+    console.log(cartItems);
+
+    const onChangeSearchInput = (e) => {
+        setSearchInput(e.target.value)
+    }
+
+    const clearSearchInput = () => {
+        setSearchInput('')
+    }
+
+    const isItemAdded = (id) => {
+        return cartItems.some(obj => Number(obj.id) === Number(id))
+    }
     return (
-        <div className="wrapper clear">
+        // в контекст передаем значения
+        <AppContext.Provider value={
+            {
+                items,
+                cartItems,
+                favorites,
+                isItemAdded,
+                onAddToFavorite,
+                setDrawerOpen,
+                setCartItems
+            }
+        }>
+            <div className="wrapper clear">
+                {/* Как drawerOpen будет true открываем корзину */}
+                {drawerOpen && (<Drawer items={cartItems} onClickClose={() => { setDrawerOpen(false) }} onRemove={onRemoveItem} />)}
+                <Header onclickCart={() => { setDrawerOpen(true) }} />
 
-            {drawerOpen && <Drawer items={cartItems} onClickClose={() => { setDrawerOpen(false) }} />}
+                {/* Если адресс будет '/' то  рендери все, что внутри Route */}
+                <Routes>
+                    <Route exact path="/"
+                        element={
+                            <Home
+                                items={items}
+                                searchInput={searchInput}
+                                setSearchInput={clearSearchInput}
+                                onChangeSearchInput={onChangeSearchInput}
+                                onAddToFavorite={onAddToFavorite}
+                                onAddTocart={onAddTocart}
+                                isLoading={isLoading}
+                            />
+                        }>
+                    </Route>
 
-            <Header onclickCart={() => { setDrawerOpen(true) }} />
+                    <Route exact path="/favorites" element={
+                        <Favorites />
+                    }>
+                    </Route>
+                </Routes>
 
-            <div className="content p-40">
-                <div className="d-flex mb-30 justify-between align-center">
-                    <h1 className="title-1">Все кроссовки</h1>
-                    <div className="search justify-between">
-                        <img src="/img/search.svg" alt="search" />
-                        <input type="text" placeholder="Поиск..." />
-                    </div>
-                </div>
-                <div className="d-flex flex-wrap">
-                    {items.map(obj => (
-                        <Card
-                            name={obj.name}
-                            price={obj.price}
-                            img={obj.image}
-                            onClickFavorit={() => { console.log('fav') }}
-                            onClickPlus={(obj) => onAddTocart(obj)}
-                        />
-                    ))}
-                </div>
-            </div>
-        </div>
+
+            </div >
+        </AppContext.Provider>
     );
 }
 
