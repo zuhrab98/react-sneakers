@@ -44,7 +44,7 @@ function Drawer({ onClickClose, onRemove, items = [], opened }) {
             <div className={`${styles.drawer} d-flex flex-column`}>
                 <div className="d-flex justify-between align-center mb-30">
                     <h3>Корзина</h3>
-                    <img onClick={onClickClose} className="image-close" src="/img/btn-close.svg" alt="close" />
+                    <img onClick={onClickClose} className="image-close" src="img/btn-close.svg" alt="close" />
                 </div>
 
                 {
@@ -58,7 +58,7 @@ function Drawer({ onClickClose, onRemove, items = [], opened }) {
                                             <p className="mb-5">{obj.name}</p>
                                             <b>{obj.price} руб.</b>
                                         </div>
-                                        <img onClick={() => onRemove(obj.id)} className="image-close" src='/img/btn-close.svg' alt="close" />
+                                        <img onClick={() => onRemove(obj.id)} className="image-close" src='img/btn-close.svg' alt="close" />
                                     </div>
                                 ))}
                             </div>
@@ -76,13 +76,13 @@ function Drawer({ onClickClose, onRemove, items = [], opened }) {
                                     </li>
                                 </ul>
                                 <button disabled={isLoading} onClick={onClickOrder} className="greenButton">
-                                    Оформить заказ <img src="/img/arrow.svg" width={13} height={13} alt="arrow " />
+                                    Оформить заказ <img src="img/arrow.svg" width={13} height={13} alt="arrow " />
                                 </button>
                             </div>
                         </div>
                         :
                         <Info
-                            image={isOrderComplete ? "/img/complete-order.jpg" : "/img/empty-cart.jpg"}
+                            image={isOrderComplete ? "img/complete-order.jpg" : "img/empty-cart.jpg"}
                             title={isOrderComplete ? "Заказ оформлен!" : "Корзина пустая"}
                             description={isOrderComplete ? `Ваш заказ #${orderId} скоро будет передан курьерской доставке` : "Добавьте хотя бы одну пару кроссовок, чтобы сделать заказ."}
                         />

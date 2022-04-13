@@ -130,7 +130,7 @@ function App() {
 
                 {/* Если адресс будет '/' то  рендери все, что внутри Route */}
                 <Routes>
-                    <Route exact path="/"
+                    <Route exact path="react-sneakers"
                         element={
                             <Home
                                 items={items}
@@ -144,12 +144,12 @@ function App() {
                         }>
                     </Route>
 
-                    <Route exact path="/favorites" element={
+                    <Route exact path="favorites" element={
                         <Favorites />
                     }>
                     </Route>
 
-                    <Route exact path="/orders" element={
+                    <Route exact path="orders" element={
                         <Orders />
                     }>
                     </Route>
