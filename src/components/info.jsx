@@ -11,7 +11,7 @@ const Info = ({ title, image, description }) => {
             <h2>{title}</h2>
             <p className="opacity-6">{description}</p>
             <button onClick={() => setDrawerOpen(false)} className="greenButton">
-                <img src="/img/arrow.svg" alt="Arrow" />
+                <img src="img/arrow.svg" alt="Arrow" />
                 Вернуться назад
             </button>
         </div>
