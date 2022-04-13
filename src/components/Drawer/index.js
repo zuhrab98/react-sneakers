@@ -1,16 +1,20 @@
 import React from 'react'
-import Info from "./info"
-import AppContext from '../context'
+import Info from "../info"
+
 import axios from 'axios'
+import { useCart } from '../../hooks/useCart'
+
+import styles from './Drawer.module.scss'
 
 const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms))
 
-function Drawer({ onClickClose, onRemove, items = [] }) {
+function Drawer({ onClickClose, onRemove, items = [], opened }) {
 
-    const { cartItems, setCartItems } = React.useContext(AppContext)
+    const { cartItems, setCartItems, totalPrice } = useCart()
     const [orderId, setOrderId] = React.useState(null)
     const [isOrderComplete, setIsOrderComplete] = React.useState(false)
     const [isLoading, setIsLoading] = React.useState(false)
+
 
     const onClickOrder = async () => {
         try {
@@ -18,7 +22,7 @@ function Drawer({ onClickClose, onRemove, items = [] }) {
             const { data } = await axios.post('https://624323f0d126926d0c5c2ace.mockapi.io/orders', {
                 items: cartItems,
             })
-            console.log(cartItems);
+
             setOrderId(data.id)
             setIsOrderComplete(true)
             setCartItems([])
@@ -36,8 +40,8 @@ function Drawer({ onClickClose, onRemove, items = [] }) {
     }
 
     return (
-        <div className="overlay">
-            <div className="drawer d-flex flex-column">
+        <div className={`${styles.overlay} ${opened ? styles.overlayVisible : ''}`}>
+            <div className={`${styles.drawer} d-flex flex-column`}>
                 <div className="d-flex justify-between align-center mb-30">
                     <h3>Корзина</h3>
                     <img onClick={onClickClose} className="image-close" src="/img/btn-close.svg" alt="close" />
@@ -45,7 +49,7 @@ function Drawer({ onClickClose, onRemove, items = [] }) {
 
                 {
                     items.length > 0 ?
-                        <div className="wrapperItems">
+                        <div className={styles.wrapperItems}>
                             <div className="items flex">
                                 {items.map((obj) => (
                                     <div key={obj.id} className="cartItem mb-20 d-flex align-center justify-between">
@@ -63,12 +67,12 @@ function Drawer({ onClickClose, onRemove, items = [] }) {
                                     <li>
                                         <span>Итого:</span>
                                         <div></div>
-                                        <b>21 498 руб.</b>
+                                        <b>{totalPrice} руб.</b>
                                     </li>
                                     <li>
                                         <span>Налог 5%:</span>
                                         <div></div>
-                                        <b>1074 руб</b>
+                                        <b>{Math.round(totalPrice * 0.05)} руб</b>
                                     </li>
                                 </ul>
                                 <button disabled={isLoading} onClick={onClickOrder} className="greenButton">

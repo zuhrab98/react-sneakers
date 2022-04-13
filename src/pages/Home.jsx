@@ -7,9 +7,6 @@ function Home({
     setSearchInput, onChangeSearchInput,
     onAddToFavorite, onAddTocart, isLoading
 }) {
-
-    
-
     const renderCard = () => {
 
         const filtredItems = items.filter((item) => item.name.toLowerCase().includes(searchInput.toLowerCase()))
