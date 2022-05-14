@@ -1,6 +1,6 @@
 Интернет-магазин кроссовок - **React Sneakers**
 
-Cсылка на ![github-pages](https://img.shields.io/badge/github-pages-black?logo=&logoColor=blue&style=for-the-badg)
+[![github-pages](https://img.shields.io/badge/github-pages-black?logo=&logoColor=blue&style=for-the-badg)](https://zuhrab98.github.io/react-sneakers/)
 
 **Stack:**
 
